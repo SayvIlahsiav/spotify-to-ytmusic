@@ -1,8 +1,6 @@
 import time
-from ytmusicapi import YTMusic, OAuthCredentials
-import subprocess
-import sys
 import os
+from ytmusicapi import YTMusic
 
 class YouTubeClient:
     def __init__(self, client_id, client_secret):
@@ -13,15 +11,24 @@ class YouTubeClient:
     def authenticate(self):
         oauth_file = "oauth.json"
         
-        if not os.path.exists(oauth_file):
-            subprocess.run([sys.executable, "-m", "ytmusicapi", "oauth"], check=True)
+        # Check if oauth.json exists
+        if os.path.exists(oauth_file):
+            try:
+                self.ytmusic = YTMusic(oauth_file)
+                return
+            except Exception as e:
+                print(f"Error loading existing oauth.json: {e}")
+                # Delete invalid oauth.json
+                os.remove(oauth_file)
         
-        oauth_credentials = OAuthCredentials(
-            client_id=self.client_id,
-            client_secret=self.client_secret
+        # If oauth.json doesn't exist, inform user to create it manually
+        raise Exception(
+            "YouTube authentication requires manual setup:\n\n"
+            "1. Open a command prompt in this folder\n"
+            "2. Run: ytmusicapi oauth\n"
+            "3. Follow the browser instructions\n"
+            "4. Once oauth.json is created, try connecting again"
         )
-        
-        self.ytmusic = YTMusic(oauth_file, oauth_credentials=oauth_credentials)
     
     def search_track(self, track_info):
         if not self.ytmusic:
