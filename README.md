@@ -1,4 +1,4 @@
-# Spotify to YouTube Music Playlist
+# Spotify to YouTube Music Playlist Transfer
 
 A desktop application that allows you to transfer your playlists from Spotify to YouTube Music with a user-friendly interface.
 
@@ -18,8 +18,9 @@ A desktop application that allows you to transfer your playlists from Spotify to
 ### Option 1: Download Pre-built Executable (Recommended)
 
 1. Go to the [Releases](https://github.com/sayvilahsiav/spotify-to-ytmusic/releases) page
-2. Download the latest `SpotifyToYTMusic.exe`
-3. Run the executable - no installation required!
+2. Download the latest release package (includes `SpotifyToYTMusic.exe` and setup files)
+3. **IMPORTANT**: Run `setup_youtube_auth.bat` first (included in the package)
+4. Run `SpotifyToYTMusic.exe`
 
 ### Option 2: Run from Source
 
@@ -34,7 +35,12 @@ cd spotify-to-ytmusic
 pip install -r requirements.txt
 ```
 
-3. Run the application:
+3. Set up YouTube authentication:
+```bash
+ytmusicapi oauth
+```
+
+4. Run the application:
 ```bash
 python src/main.py
 ```
@@ -49,7 +55,8 @@ Before using the application, you need to set up API credentials for both servic
 2. Log in with your Spotify account
 3. Click "Create an app"
 4. Enter an app name and description
-5. Copy your `Client ID` and `Client Secret`
+5. Add `http://127.0.0.1:8888/callback` as a Redirect URI
+6. Copy your `Client ID` and `Client Secret`
 
 ### YouTube Music API Setup
 
@@ -62,21 +69,24 @@ Before using the application, you need to set up API credentials for both servic
 
 ## 📖 How to Use
 
-1. **Launch the Application**
+1. **Initial Setup (One-time only)**
+   - If using the exe: Run `setup_youtube_auth.bat` from the release package
+   - If running from source: Run `ytmusicapi oauth` in your terminal
+
+2. **Launch the Application**
    - Run `SpotifyToYTMusic.exe` or `python src/main.py`
 
-2. **Connect to Spotify**
+3. **Connect to Spotify**
    - Go to the "Spotify Setup" tab
    - Enter your Spotify Client ID and Client Secret
    - Click "Connect to Spotify"
 
-3. **Connect to YouTube Music**
+4. **Connect to YouTube Music**
    - Go to the "YouTube Music Setup" tab
    - Enter your YouTube Client ID and Client Secret
    - Click "Connect to YouTube Music"
-   - Follow the browser authentication process
 
-4. **Transfer Playlists**
+5. **Transfer Playlists**
    - Go to the "Transfer" tab
    - Select the playlists you want to transfer
    - Click "Start Transfer"
@@ -105,14 +115,28 @@ spotify-to-ytmusic/
 │   └── icon.ico         # Application icon
 ├── requirements.txt     # Python dependencies
 ├── build.py            # Build script for creating executable
+├── setup_youtube_auth.bat # YouTube authentication setup script
 └── README.md
 ```
 
-## ⚠️ Known Issues
+## ⚠️ Known Issues & Troubleshooting
 
-- YouTube Music API may have rate limits - the app includes delays to prevent hitting these limits
+### YouTube Authentication Error
+If you get an error about "Invalid auth JSON string or file path provided" when connecting to YouTube:
+
+**Solution**: You must run `setup_youtube_auth.bat` (included in the release) before using the application. This is a one-time setup that creates the necessary authentication file.
+
+### Common Issues
+- YouTube Music API has rate limits - the app includes delays to prevent hitting these limits
 - Some tracks might not be found on YouTube Music due to naming differences
-- The first YouTube authentication may require manual browser interaction
+- The app requires write permissions in its directory to save authentication files
+
+### Troubleshooting Steps
+1. Ensure you've run `setup_youtube_auth.bat` before first use
+2. Make sure the app is in a folder where you have write permissions
+3. Check that your API credentials are correct
+4. Try running as administrator if you encounter permission issues
+5. If all else fails, try the source code version for more control
 
 ## 🤝 Contributing
 
