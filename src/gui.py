@@ -187,23 +187,24 @@ class SpotifyToYouTubeApp:
         
         # Instructions
         ttk.Label(youtube_card, 
-                 text="Enter your YouTube API credentials to transfer playlists.",
+                 text="Enter your YouTube API credentials. Authentication will open in your browser automatically.",
                  font=('Segoe UI', 10),
                  background='white',
                  foreground='#666666').pack(anchor="w", pady=(0, 20))
         
-        # Warning box
-        warning_frame = ttk.Frame(youtube_card, style="Card.TFrame")
-        warning_frame.pack(fill="x", pady=(0, 20))
-        warning_frame.configure(style="Warning.TFrame")
+        # Info box
+        info_frame = ttk.Frame(youtube_card, style="Card.TFrame")
+        info_frame.pack(fill="x", pady=(0, 20))
         
-        warning_label = ttk.Label(warning_frame,
-                                text="⚠️ Important: Make sure you've run setup_youtube_auth.bat first!",
-                                font=('Segoe UI', 10, 'bold'),
-                                background='#fff3cd',
-                                foreground='#856404',
-                                padding=10)
-        warning_label.pack(fill="x")
+        info_label = ttk.Label(info_frame,
+                             text="ℹ️ Note: The app will automatically handle YouTube authentication.\n"
+                                  "Your browser will open for you to grant permissions.",
+                             font=('Segoe UI', 10),
+                             background='#e3f2fd',
+                             foreground='#1976d2',
+                             padding=10,
+                             wraplength=400)
+        info_label.pack(fill="x")
         
         # Credentials frame
         creds_frame = ttk.Frame(youtube_card, style="Card.TFrame")
